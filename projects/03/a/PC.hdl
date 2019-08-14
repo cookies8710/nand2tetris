@@ -16,5 +16,18 @@ CHIP PC {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+        // if inc, feed the previous out incremented by 1 to the reg
+	Add16(a=rout, b[0]=true, out=inced);
+	Mux16(sel=inc, a=rout, b=inced, out=p);
+
+	// if load, feed in to the reg
+	Mux16(sel=load, a=p, b=in, out=q);
+
+	// if reset, feed 0 to the reg
+	Mux16(sel=reset, a=q, b=false, out=r);
+
+	// always load
+	Register(in=r, out=rout, load=true);
+
+	And16(a=true, b=rout, out=out);
 }

@@ -14,8 +14,7 @@ CHIP Bit {
     OUT out;
 
     PARTS:
-    Mux(a=do, b=in, sel=load, out=mo);
-    DFF(in=mo, out=do);
-    // how can I wire the DFF's output to both mux input and Bit's output without the And?
-    And(a=do, b=true, out=out);
+    Mux(a=oo, b=in, sel=load, out=k);
+    DFF(in=k, out=oo);
+    And(a=true, b=oo, out=out);
 }
