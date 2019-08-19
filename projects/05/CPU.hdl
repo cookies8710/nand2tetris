@@ -46,15 +46,15 @@ CHIP CPU {
 	out=alu-out, zr=alu-zr, ng=alu-ng,
         out=outM);
 
-	// write to M - if is compute and tht is M (d3)
+	// write to M - if compute instruction (bit 15) and target is M (d3/bit 3)
 	And(a=instruction[15], b=instruction[3], out=writeM);
 
-	// D; load: if C instruction and tgt is D - i.e. !instruction[15] && instruction[4]
+	// D; load: if compute instruction and target is D - i.e. instruction[15] && instruction[4]
 	Not(in=instruction[15], out=is-A-instruction);
 	And(a=instruction[15], b=instruction[4], out=D-load);
 	Register(in=alu-out, out=alu-x, out=D-out, load=D-load);
 
-	// A; load if A instruction or tgt is A - i.e. instruction[15] || instruction[5]
+	// A; load if A instruction or target is A - i.e. instruction[15] || instruction[5]
 	Or(a=is-A-instruction, b=instruction[5], out=A-load);
 	Register(in=A-in, out=A-out, out[0..14]=addressM[0..14], load=A-load);
 	// 15 && 12
